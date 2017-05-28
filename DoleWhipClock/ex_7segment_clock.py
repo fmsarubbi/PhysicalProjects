@@ -116,7 +116,7 @@ def updatePost(now):
     segment.set_digit(3, 7)
   elif now.second % 5 < 2 :
     # write time of last post
-    lastPostTime = dole_whip_info['last_post_time']
+    lastPostTime = dole_whip_info.get('last_post_time', 0)
     #if more than 9 days write OLD
     if (now - lastPostTime).days > 9 :
       logging.info('Writing OLD for post')
@@ -130,7 +130,7 @@ def updatePost(now):
       segment.set_digit(2, 'd')
   else :
     ## Write Num posts
-    likes = dole_whip_info['last_post_likes']
+    likes = dole_whip_info.get('last_post_likes', '----')
     logging.info('Writing #%s for post' % likes)
     segment.print_number_str(likes)
 
@@ -148,7 +148,7 @@ def updatePics(now) :
     
   elif now.second % 5 < 2 :
     # write time of last post
-    last_photo_time = dole_whip_info['last_photo_time']
+    last_photo_time = dole_whip_info.get('last_photo_time',0)
     #if more than 9 days write OLD
     if (now - last_photo_time).days > 9 :
       logging.info('Writing OLD for pic')
@@ -162,7 +162,7 @@ def updatePics(now) :
       segment.set_digit(2, 'd')
   else :
     ## Write Num posts
-    likes = dole_whip_info['last_photo_likes']
+    likes = dole_whip_info.get('last_photo_likes','----')
     logging.info('Writing #%s for pics' % likes)
     segment.print_number_str(likes)
 
@@ -173,6 +173,10 @@ def main():
   # Continually update the time on a 4 char, 7-segment display
   while(True):
     now = datetime.datetime.now()
+    if (now - lastUpdate).seconds > 60 :
+      dole_whip_info = collect_dole_whip_info()
+      lastUpdate = now
+    
     if now.second % 30 < 10 :
       update_time(now)
     elif now.second % 30 < 20 :
@@ -180,9 +184,6 @@ def main():
     else :
       updatePics(now)
 
-    if (now - lastUpdate).seconds > 60 :
-      dole_whip_info = collect_dole_whip_info()
-      lastUpdate = now
       
 
 
