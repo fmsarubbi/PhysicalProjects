@@ -108,13 +108,13 @@ def collect_dole_whip_info():
 def updatePost(now):
   segment.clear()
   
-  if now % 5 == 0 :
+  if now.second % 5 == 0 :
     #POST
     segment.set_digit_raw(0, 0x73)
     segment.set_digit(1, 0)
     segment.set_digit(2, 5)
     segment.set_digit(3, 7)
-  elif now % 5 < 2 :
+  elif now.second % 5 < 2 :
     # write time of last post
     lastPostTime = dole_whip_info['last_post_time']
     #if more than 9 days write OLD
@@ -139,14 +139,14 @@ def updatePost(now):
 def updatePics(now) :
   segment.clear()
   
-  if now % 5 == 0 :
+  if now.second % 5 == 0 :
     logging.info('Writing Pic')
     #PIC
     segment.set_digit_raw(0, 0x73)
     segment.set_digit(1, 1)
     segment.set_digit(2, 'c')
     
-  elif now % 5 < 2 :
+  elif now.second % 5 < 2 :
     # write time of last post
     last_photo_time = dole_whip_info['last_photo_time']
     #if more than 9 days write OLD
@@ -180,7 +180,7 @@ def main():
     else :
       updatePics(now)
 
-    if now - lastUpdate > 60 :
+    if (now - lastUpdate).seconds > 60 :
       dole_whip_info = collect_dole_whip_info()
       lastUpdate = now
       
