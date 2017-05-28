@@ -55,6 +55,7 @@ def updateTime(now):
   writeDisplay()
 
 def writeDisplay():
+  global errorCnt
   # Write the display buffer to the hardware.  This must be called to
   # update the actual display LEDs.
   try:
@@ -170,6 +171,7 @@ def updatePics(now) :
 
 
 def main():
+  global lastUpdate
   # Continually update the time on a 4 char, 7-segment display
   while(True):
     now = datetime.datetime.now()
