@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import argparse
 import sys
 import time
 import datetime
@@ -7,10 +8,20 @@ import logging
 
 from Adafruit_LED_Backpack import SevenSegment
 
+parser = argparse.ArgumentParser(
+    description='The code to run the clock.'
+)
+parser.add_argument("-v", "--verbose", help="increase output verbosity",
+                    action="store_true")
+
+args = parser.parse_args()
+if args.verbose:
+    logging.basicConfig(level=logging.DEBUG)
+
+
 # ===========================================================================
 # Clock Example
 # ===========================================================================
-getattr(logging, loglevel.upper())
 
 segment = SevenSegment.SevenSegment(address=0x70)
 # Initialize the display. Must be called once before using the display.
